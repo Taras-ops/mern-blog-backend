@@ -9,9 +9,7 @@ import {checkAuth, handleValidationErrors} from './utils/index.js'
 import {UserController, PostController, CommentController} from './controllers/index.js'
 
 mongoose
-  .connect(
-    'mongodb+srv://taras:taras@cluster0.ykbsd.mongodb.net/blog?retryWrites=true&w=majority'
-  )
+  .connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('DB is OK')
   })
@@ -63,7 +61,7 @@ app.post('/posts/:id/comments', checkAuth, commentCreateValidation, handleValida
 app.delete('/posts/:postId/comments/:commentId', checkAuth, CommentController.remove)
 app.patch('/posts/:postId/comments/:commentId', checkAuth, commentCreateValidation, handleValidationErrors, CommentController.update)
 
-app.listen(PORT, (err) => {
+app.listen(process.env.PORT || PORT, (err) => {
   if (err) {
     return console.log(err)
   }
